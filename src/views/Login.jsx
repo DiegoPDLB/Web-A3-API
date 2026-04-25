@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const Login = ({ login }) => {
     const [username, setUsername] = useState("");
@@ -23,17 +23,22 @@ const Login = ({ login }) => {
     };
 
     return (
-        <form onSubmit={onsubmit}>
-            <div>
-                <label>Username</label>
-                <input value={username} onChange={(e) => setUsername(e.target.value)} />
+        <div style={{ padding: 20 }}>
+            <form onSubmit={onsubmit}>
+                <div>
+                    <label>Username</label>
+                    <input value={username} onChange={(e) => setUsername(e.target.value)} />
+                </div>
+                <div>
+                    <label>Password</label>
+                    <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                </div>
+                <button type="submit">Login</button>
+            </form>
+            <div style={{ marginTop: 12 }}>
+                <Link to="/users">Ver usuarios</Link>
             </div>
-            <div>
-                <label>Password</label>
-                <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-            </div>
-            <button type="submit">Login</button>
-        </form>
+        </div>
     );
 };
 
