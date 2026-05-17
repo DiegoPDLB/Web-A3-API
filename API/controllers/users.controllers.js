@@ -1,6 +1,6 @@
 import User from "../models/users.model.js";
-import bcrypt from 'bcryptjs';
 import mongoose from 'mongoose';
+import { genSalt, hashPassword } from '../utils/password.js';
 
 export const getUsers = async (req, res) => {
     try {
@@ -36,9 +36,9 @@ export const postUser = async (req, res) => {
         }
         const exists = await User.findOne({ username });
         if (exists) return res.status(400).json({ message: 'Usuario ya existe' });
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(password, salt);
-        const user = new User({ name, username, password: hashedPassword });
+        const salt = await genSalt();
+        const hashedPassword = await hashPassword(password, salt);
+        const user = new User({ name, username, password: hashedPassword, salt });
         await user.save();
         const userToReturn = user.toObject();
         delete userToReturn.password;
@@ -56,8 +56,9 @@ export const putUser = async (req, res) => {
         if (!dbConnected) return res.status(404).json({ message: 'Usuario no encontrado (DB desconectada)' });
         const update = { name, username };
         if (password) {
-            const salt = await bcrypt.genSalt(10);
-            update.password = await bcrypt.hash(password, salt);
+            const salt = await genSalt();
+            update.password = await hashPassword(password, salt);
+            update.salt = salt;
         }
         const user = await User.findByIdAndUpdate(id, update, { new: true }).select('-password');
         if (!user) return res.status(404).json({ message: 'Usuario no encontrado' });
