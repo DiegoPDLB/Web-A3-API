@@ -1,3 +1,0 @@
-Pega aquí el enlace al repositorio de esta API (por ejemplo, https://github.com/usuario/repositorio)
-
-Reemplaza el texto anterior por el link real antes de entregar.
