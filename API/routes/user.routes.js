@@ -5,7 +5,7 @@ import { validateUserCreate, validateUserUpdate } from "../middlewares/validator
 
 const router = Router();
 
-router.get('/', getUsers);
+router.get('/', authenticate, getUsers);
 router.get('/:id', authenticate, getUser);
 router.post('/', authenticate, validateUserCreate, postUser);
 router.put('/:id', authenticate, validateUserUpdate, putUser);
